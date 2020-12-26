@@ -136,8 +136,7 @@ export const constantRoutes = [
       },
     ],
   },
-/*
-  {
+  /* {
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
@@ -149,18 +148,17 @@ export const constantRoutes = [
         meta: { title: 'guide', icon: 'guide', noCache: true },
       },
     ],
-  },
-*/
+  }, */
   elementUiRoutes,
 ];
 
 export const asyncRoutes = [
   permissionRoutes,
-  //componentRoutes,
-  //chartsRoutes,
-  //nestedRoutes,
+  // componentRoutes,
+  // chartsRoutes,
+  // nestedRoutes,
   tableRoutes,
-  //adminRoutes,
+  // adminRoutes,
   {
     path: '/theme',
     component: Layout,
@@ -189,8 +187,8 @@ export const asyncRoutes = [
     ],
   },
   errorRoutes,
-  //excelRoutes,
-/*   {
+  // excelRoutes,
+  /* {
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
@@ -205,7 +203,7 @@ export const asyncRoutes = [
       },
     ],
   }, */
-/*   {
+  /* {
     path: '/pdf',
     component: Layout,
     redirect: '/pdf/index',
@@ -219,12 +217,12 @@ export const asyncRoutes = [
       },
     ],
   }, */
-/*   {
+  /* {
     path: '/pdf/download',
     component: () => import('@/views/pdf/Download'),
     hidden: true,
   }, */
-/*   {
+  /* {
     path: '/i18n',
     component: Layout,
     meta: { permissions: ['view menu i18n'] },
@@ -237,7 +235,7 @@ export const asyncRoutes = [
       },
     ],
   }, */
-/*   {
+  /*   {
     path: '/external-link',
     component: Layout,
     children: [
