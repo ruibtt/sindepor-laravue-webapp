@@ -18,7 +18,7 @@ class CreateSociosTable extends Migration
             $table->string('nome');
             $table->integer('num_socio')->unique();
             $table->string('regiao');
-            $table->string('local_trabalho');
+            $table->string('local_trabalho')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->useCurrent();
         });
