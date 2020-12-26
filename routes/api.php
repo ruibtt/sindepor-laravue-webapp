@@ -39,6 +39,9 @@ Route::namespace('Api')->group(function() {
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' .Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+
+        // SOCIO: Novo resource para trabalhar com a tabela SOCIOS
+        Route::apiResource('socios', 'SocioController');
     });
 });
 
