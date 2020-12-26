@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\SocioResource;
 use App\Laravue\Models\Socio;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
 class SocioController extends BaseController
 {
     /**
@@ -39,7 +42,27 @@ class SocioController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        //Alterações para guardar os dados no registo
+        $validator = Validator::make(
+            $request->all(),
+            [ 'nome' => ['required'] ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 403);
+        } else {
+            $params = $request->all();
+            $socio = Socio::create([
+                'nome' => $params['nome'],
+                'num_socio' => $params['num_socio'],
+                'regiao' => $params['regiao'],
+                'local_trabalho' => $params['local_trabalho'],
+            ]);
+        }
+
+        //Log::info($socio);
+        
+        return new SocioResource($socio);
     }
 
     /**
