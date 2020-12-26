@@ -98,14 +98,14 @@ export const constantRoutes = [
     path: '/socios',
     // You can choose different layout components - remember to import Layout first
     component: Layout,
-    redirect: '/socios/index',
+    redirect: '/socios/List',
     // Here the route is displayed in app-main
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/socios/index'),
-        name: 'Sócios',
-        meta: { title: 'Sócios', icon: 'people', noCache: true },
+        path: 'socios',
+        component: () => import('@/views/socios/List'),
+        name: 'SocioList',
+        meta: { title: 'socioList', icon: 'list', noCache: true },
       },
     ],
   },
