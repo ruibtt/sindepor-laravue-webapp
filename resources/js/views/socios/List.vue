@@ -34,9 +34,30 @@
           <span>{{ scope.row.regiao }}</span>
         </template>
       </el-table-column>
+      <!-- Coluna com o botão Eliminar -->
+      <el-table-column align="center" label="Actions" width="350">
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            size="small"
+            icon="el-icon-edit"
+            @click="handleEditForm(scope.row.id, scope.row.nome)"
+          >
+            Editar
+          </el-button>
+          <el-button
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row.id, scope.row.nome)"
+          >
+            Eliminar
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- Elemento do dialog -->
-    <el-dialog :title="'Ficha de Sócio'" :visible.sync="socioFormVisible">
+    <el-dialog :title="formTitle" :visible.sync="socioFormVisible">
       <div class="form-container">
         <el-form
           ref="categoryForm"
@@ -80,6 +101,7 @@ export default {
       list: [],
       loading: true,
       socioFormVisible: false,
+      formTitle: '',
       currentSocio: {},
     };
   },
@@ -94,6 +116,7 @@ export default {
       this.loading = false;
     },
     handleCreate() {
+      this.formTitle = 'Nova ficha de Sócio';
       this.socioFormVisible = true;
       this.currentSocio = {
         nome: '',
@@ -102,28 +125,89 @@ export default {
         local_trabalho: '',
       };
     },
-    // File: resources/js/views/categories/List.vue
+    // Ativa o Dialog para a edição do registo
+    handleEditForm(id) {
+      this.formTitle = 'Edição da ficha do Sócio';
+      this.currentSocio = this.list.find((socio) => socio.id === id);
+      this.socioFormVisible = true;
+    },
+    // Trata da Submissão dos dados
     handleSubmit() {
-      socioResource
-        .store(this.currentSocio)
-        .then((response) => {
-          this.$message({
-            message:
-              'Novo Sócio ' +
-              this.currentSocio.nome +
-              ' foi criado com sucesso!',
-            type: 'success',
-            duration: 5 * 1000,
+      // Se o ID estiver indefinido, então cria novo registo
+      // Senão, atualiza o registo
+      if (this.currentSocio.id !== undefined) {
+        socioResource
+          .update(this.currentSocio.id, this.currentSocio)
+          .then((response) => {
+            this.$message({
+              type: 'success',
+              message: 'Ficha do Sócio foi atualizada com sucesso!',
+              duration: 5 * 1000,
+            });
+            this.getList();
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.socioFormVisible = false;
           });
-          this.currentSocio = {
-            name: '',
-            description: '',
-          };
-          this.socioFormVisible = false;
-          this.getList();
+      } else {
+        socioResource
+          .store(this.currentSocio)
+          .then((response) => {
+            this.$message({
+              message:
+                'Novo Sócio ' +
+                this.currentSocio.name +
+                ' foi criado com sucesso!',
+              type: 'success',
+              duration: 5 * 1000,
+            });
+            this.currentSocio = {
+              nome: '',
+              num_socio: '',
+              regiao: '',
+              local_trabalho: '',
+            };
+            this.socioFormVisible = false;
+            this.getList();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+    // Trata da Eliminação
+    handleDelete(id, name) {
+      this.$confirm(
+        'Esta ação elimina o registo do Sócio ' + name + '. Continuar?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          socioResource
+            .destroy(id)
+            .then((response) => {
+              this.$message({
+                type: 'success',
+                message: 'Registo eliminado com sucesso!',
+              });
+              this.getList();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Eliminação cancelada!',
+          });
         });
     },
   },
