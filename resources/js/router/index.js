@@ -104,8 +104,8 @@ export const constantRoutes = [
       {
         path: 'socios',
         component: () => import('@/views/socios/List'),
-        name: 'SocioList',
-        meta: { title: 'socioList', icon: 'list', noCache: true },
+        name: 'Socios',
+        meta: { title: 'Lista de Sócios', icon: 'list', noCache: true },
       },
     ],
   },
